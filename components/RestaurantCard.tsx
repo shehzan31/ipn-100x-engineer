@@ -7,6 +7,28 @@ interface RestaurantCardProps {
 export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
   // console.log('Rendering restaurant:', restaurant.name); // Dead code - should be removed
 
+  const formatTime = (time: string): string => {
+    const [hours, minutes] = time.split(':');
+    const hour = parseInt(hours, 10);
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+    return `${displayHour}:${minutes} ${period}`;
+  };
+
+  const isOpenNow = (): boolean => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTime = currentHour * 60 + currentMinute;
+
+    const [openHour, openMinute] = restaurant.openingHours.split(':').map(Number);
+    const [closeHour, closeMinute] = restaurant.closingHours.split(':').map(Number);
+    const openTime = openHour * 60 + openMinute;
+    const closeTime = closeHour * 60 + closeMinute;
+
+    return currentTime >= openTime && currentTime < closeTime;
+  };
+
   const renderStars = (rating: number) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
@@ -64,10 +86,20 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
           📍 {restaurant.address}
         </p>
 
-        {/* TODO: Workshop Exercise 1 - Add opening hours display */}
-        {/* The data includes openingHours and closingHours fields */}
-        {/* Display them here with appropriate formatting */}
-        {/* Consider showing "Open Now" or "Closed" status */}
+        <div className="flex items-center gap-2 mb-2">
+          <p className="text-sm text-gray-600">
+            🕐 {formatTime(restaurant.openingHours)} - {formatTime(restaurant.closingHours)}
+          </p>
+          <span
+            className={`text-xs font-semibold px-2 py-0.5 rounded ${
+              isOpenNow()
+                ? 'bg-green-100 text-green-800'
+                : 'bg-red-100 text-red-800'
+            }`}
+          >
+            {isOpenNow() ? 'Open' : 'Closed'}
+          </span>
+        </div>
 
         <p className="text-sm text-gray-500 line-clamp-2">{restaurant.description}</p>
 
