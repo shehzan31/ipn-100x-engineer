@@ -110,6 +110,7 @@ for (let i = 1; i < lines.length; i++) {
     priceRange: convertPriceRange(fields[7] || '$10-20'),
     openingHours: hours.opening,
     closingHours: hours.closing,
+    operatingHoursDetailed: fields[3] || '', // Preserve full operating hours from CSV
     latitude: coords.latitude,
     longitude: coords.longitude,
     phone: fields[2] || '',

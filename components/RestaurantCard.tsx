@@ -86,19 +86,23 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
           📍 {restaurant.address}
         </p>
 
-        <div className="flex items-center gap-2 mb-2">
-          <p className="text-sm text-gray-600">
-            🕐 {formatTime(restaurant.openingHours)} - {formatTime(restaurant.closingHours)}
-          </p>
-          <span
-            className={`text-xs font-semibold px-2 py-0.5 rounded ${
-              isOpenNow()
-                ? 'bg-green-100 text-green-800'
-                : 'bg-red-100 text-red-800'
-            }`}
-          >
-            {isOpenNow() ? 'Open' : 'Closed'}
-          </span>
+        <div className="mb-2">
+          <div className="flex items-center gap-2">
+            <p className="text-sm text-gray-600">
+              🕐 {restaurant.operatingHoursDetailed
+                ? restaurant.operatingHoursDetailed
+                : `${formatTime(restaurant.openingHours)} - ${formatTime(restaurant.closingHours)}`}
+            </p>
+            <span
+              className={`text-xs font-semibold px-2 py-0.5 rounded flex-shrink-0 ${
+                isOpenNow()
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-red-100 text-red-800'
+              }`}
+            >
+              {isOpenNow() ? 'Open' : 'Closed'}
+            </span>
+          </div>
         </div>
 
         <p className="text-sm text-gray-500 line-clamp-2">{restaurant.description}</p>

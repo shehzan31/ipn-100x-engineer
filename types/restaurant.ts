@@ -7,6 +7,7 @@ export interface Restaurant {
   priceRange: string;
   openingHours: string;
   closingHours: string;
+  operatingHoursDetailed?: string; // Day-specific hours from CSV
   latitude: number;
   longitude: number;
   phone: string;
